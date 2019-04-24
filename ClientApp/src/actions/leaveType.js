@@ -1,0 +1,22 @@
+export const LeaveType = {
+    Annual: 10,
+    CarriedForward: 20,
+    Sick: 30,
+    Hospitalization: 40,
+    Compassionate: 50,
+    Study: 60,
+    Examination: 70,
+    Maternity: 80,
+    Paternity: 90,
+    Compensation: 100,
+    ReplacementHoliday: 105,
+    Replacement: 110,
+    Marriage: 115,
+    Army: 120,
+    UnutilizedLeave: 130,
+    Paid: 140,
+    NonPaid: 150,
+    NonPaidHour: 160,
+    TimeOff: 170,
+    NonStated: -2147483647
+}
