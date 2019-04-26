@@ -8,30 +8,41 @@ import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
+import BeachAccessIcon from '@material-ui/icons/BeachAccess';
+import Divider from '@material-ui/core/Divider';
 
 import './style/ListView.css'
 
 const styles = theme => ({
     root: {
         width: '100%',
-        maxWidth: 360,
+        maxWidth: 560,
+        // overflowY: 'scroll',
+        // height: '80vh',
+        // paddingLeft: '48px',
+        // paddingRight: '48px',
         backgroundColor: theme.palette.background.paper,
+
     },
     inline: {
         display: 'inline',
     },
 });
 
+
+
 class ListView extends Component {
 
-    render() {
+    renderList() {
         const { classes } = this.props;
-        return (
-            <div className="list-container">
-                <List className={classes.root}>
+        return [1, 2, 3, 4, 1, 1, 1, 1, 1, 1, 5, 6, 8, 9, 10, 11, 11, 1, 1].map(x => {
+            return (
+                <div>
                     <ListItem alignItems="flex-start">
                         <ListItemAvatar>
-                            <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
+                            <Avatar>
+                                <BeachAccessIcon />
+                            </Avatar>
                         </ListItemAvatar>
                         <ListItemText
                             primary="Brunch this weekend?"
@@ -45,7 +56,23 @@ class ListView extends Component {
                             }
                         />
                     </ListItem>
-                </List>
+                    <li>
+                        <Divider variant="inset" />
+                    </li>
+                </div>
+            );
+        })
+    }
+
+    render() {
+        const { classes } = this.props;
+        return (
+            <div className="list-container">
+                <div className="list-holder">
+                    <List className={classes.root}>
+                        {this.renderList()}
+                    </List>
+                </div>
             </div>
         );
     }
