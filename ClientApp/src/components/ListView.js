@@ -27,6 +27,9 @@ const styles = theme => ({
     inline: {
         display: 'inline',
     },
+    ListItem: {
+        zIndex: '2'
+    }
 });
 
 
@@ -37,8 +40,8 @@ class ListView extends Component {
         const { classes } = this.props;
         return [1, 2, 3, 4, 1, 1, 1, 1, 1, 1, 5, 6, 8, 9, 10, 11, 11, 1, 1].map(x => {
             return (
-                <div>
-                    <ListItem alignItems="flex-start">
+                <div style={{ zIndex: '4' }}>
+                    <ListItem alignItems="flex-start" className={classes.ListItem} >
                         <ListItemAvatar>
                             <Avatar>
                                 <BeachAccessIcon />
