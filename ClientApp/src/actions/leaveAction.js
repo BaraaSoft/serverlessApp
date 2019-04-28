@@ -35,6 +35,8 @@ export const applyLeave = (employeeId = employeeIdInit) => async (dispatch, getS
                 id: Math.floor(Math.random() * 1000).toString()
             }))
 
+            dispatch(clearFormApplyLeave());
+
         }).catch(error => {
             dispatch(enqueueNotification({
                 ...notificationInit,
@@ -44,6 +46,7 @@ export const applyLeave = (employeeId = employeeIdInit) => async (dispatch, getS
                 priority: 10,
                 id: Math.floor(Math.random() * 1000).toString()
             }))
+
         });
 
 }
@@ -67,4 +70,11 @@ export const setFormLeaveReason = (reason) => (dispatch) => {
         type: ActionType.LEAVE_REASON_CHANGE,
         payload: reason
     })
+}
+
+export const clearFormApplyLeave = () => (dispatch) => {
+    dispatch({
+        type: ActionType.APPLY_LEAVE_CLEAR,
+        payload: null
+    });
 }

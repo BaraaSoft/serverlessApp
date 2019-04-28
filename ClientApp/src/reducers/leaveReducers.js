@@ -18,6 +18,8 @@ const LeaveApplyTransactionsReducer = (state = LeaveApplyTransInit, action) => {
             return { ...state, leaveType: action.payload };
         case ActionType.LEAVE_REASON_CHANGE:
             return { ...state, leaveReason: action.payload }
+        case ActionType.APPLY_LEAVE_CLEAR:
+            return { ...LeaveApplyTransInit };
         default:
             return state;
     }
