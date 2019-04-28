@@ -4,7 +4,8 @@
     align-items: center;
     /* background-color: burlywood; */
     height: 93vh;
-    background-color: transparent;
+    background-color: #ffffffb8;
+    /* background-color: transparent; */
 }
 
 .list-holder {
@@ -20,7 +21,8 @@
     width: 100%;
 }
 .list-holder::-webkit-scrollbar {
-    width: 1em;
+    width: 12px;
+    border-radius: 20px;
 }
  
 .list-holder::-webkit-scrollbar-track {
@@ -28,6 +30,6 @@
 }
  
 .list-holder::-webkit-scrollbar-thumb {
-  background-color: rgb(62, 116, 204);
+  background-color: rgba(62, 116, 204, 0.74);
   outline: 1px solid slategrey;
 }

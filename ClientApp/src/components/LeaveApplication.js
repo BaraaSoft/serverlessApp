@@ -16,7 +16,14 @@ import Button from '@material-ui/core/Button';
 
 
 import { connect } from 'react-redux';
-import { LeaveType } from '../actions'
+import {
+    LeaveType,
+    setFormLeaveDate,
+    setFormLeaveType,
+    setFormLeaveReason,
+    applyLeave,
+    enqueueNotification
+} from '../actions'
 import './style/LeaveApplication.css'
 
 const styles = theme => ({
@@ -35,7 +42,8 @@ const styles = theme => ({
         marginLeft: theme.spacing.unit,
         marginRight: theme.spacing.unit,
         width: '100%',
-        marginTop: '44px'
+        marginTop: '44px',
+        flexGrow: '1'
     },
     button: {
         marginTop: '58px',
@@ -52,16 +60,34 @@ class LeaveApplication extends Component {
 
     handleDateChange(moment) {
         const datetime = moment.toDate();
+        this.props.setFormLeaveDate(datetime);
         console.log("Leave:")
         console.log(datetime.toJSON())
     }
 
     handleLeaveTypeChange(e) {
+        this.props.setFormLeaveType(e.target.value);
         console.log(e.target.value)
     }
 
     handleTextChange(e) {
+        this.props.setFormLeaveReason(e.target.value);
+    }
 
+    handleSubmit(e) {
+        this.props.applyLeave();
+        // this.props.enqueueNotification({
+        //     id: Math.floor(Math.random() * 1000).toString(),
+        //     position: {
+        //         vertical: 'bottom',
+        //         horizontal: 'left',
+        //     },
+        //     open: true,
+        //     variant: ['success', 'warning', 'error', 'info'][0],
+        //     message: 'sucessfully submitted your leave',
+        //     data: {}
+        // });
+        this.props.history.push("/");
     }
 
     renderLeaveList() {
@@ -73,7 +99,11 @@ class LeaveApplication extends Component {
     }
 
     render() {
-        const { classes } = this.props;
+        //let LeaveDate, LeaveType, LeaveReason;
+        const { classes,
+            leaveApplyTransaction: { leaveDate, leaveType, leaveReason }
+        } = this.props;
+
         const { selectedDate } = this.state;
         return (
 
@@ -86,19 +116,19 @@ class LeaveApplication extends Component {
                                 className={classes.datePicker}
                                 margin="normal"
                                 label="Select Date"
-                                value={selectedDate}
-                                onChange={this.handleDateChange}
+                                value={leaveDate}
+                                onChange={this.handleDateChange.bind(this)}
                             />
                         </Grid>
                     </MuiPickersUtilsProvider>
                     <FormControl className={classes.formControl}>
-                        <InputLabel htmlFor="demo-controlled-open-select">Age</InputLabel>
+                        <InputLabel htmlFor="demo-controlled-open-select">{leaveType ? '' : 'Leave Type'}</InputLabel>
                         <Select
                             open={this.state.open}
                             onClose={this.handleClose}
                             onOpen={this.handleOpen}
-                            value={this.state.age}
-                            onChange={this.handleLeaveTypeChange}
+                            value={leaveType}
+                            onChange={this.handleLeaveTypeChange.bind(this)}
                             inputProps={{
                                 name: 'age',
                                 id: 'demo-controlled-open-select',
@@ -109,21 +139,21 @@ class LeaveApplication extends Component {
                             {this.renderLeaveList()}
                         </Select>
                     </FormControl>
+
                     <TextField
                         id="outlined-multiline-flexible"
                         label="Leave Reason"
                         multiline
                         rowsMax="7"
-                        value={this.state.multiline}
-                        onChange={this.handleTextChange}
+                        value={leaveReason}
+                        onChange={this.handleTextChange.bind(this)}
                         className={classes.textField}
                         margin="normal"
                         variant="outlined"
                     />
-                    <Button size="large" variant="outlined" color="primary" className={classes.button}>
+                    <Button onClick={this.handleSubmit.bind(this)} size="large" variant="outlined" color="primary" className={classes.button}>
                         Apply Leave
                    </Button>
-
                 </div>
             </div>
         );
@@ -134,5 +164,15 @@ LeaveApplication.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 
+function mapStateToProps({ leaveApplyTransaction }) {
+    return { leaveApplyTransaction }
+}
 
-export default withStyles(styles)(LeaveApplication);
+
+export default connect(mapStateToProps, {
+    setFormLeaveDate,
+    setFormLeaveType,
+    setFormLeaveReason,
+    applyLeave,
+    enqueueNotification
+})(withStyles(styles)(LeaveApplication));
