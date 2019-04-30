@@ -2,6 +2,7 @@
 import LeaveApi from '../http/LeaveApi';
 import { ActionType } from './actionType';
 import { enqueueNotification } from './notificationAction';
+import { fetchLeaves } from './LeaveListviewActions';
 
 const employeeIdInit = 'C7214A22-27D0-4AE3-BB9B-58D2BD296D81';
 
@@ -18,16 +19,32 @@ const notificationInit = {
     priority: 0
 }
 
+
+export const transformDataTo = (leaveTrans) => {
+    return {
+        leaveType: leaveTrans.leaveType,
+        applyDate: leaveTrans.leaveDate.toJSON(),
+        reason: leaveTrans.leaveReason
+    }
+}
+
 export const applyLeave = (employeeId = employeeIdInit) => async (dispatch, getState) => {
+    // const index = getState().leaveApplyTransaction.leaveDate.toJSON().indexOf('T');
+    // const datetime = getState().leaveApplyTransaction.leaveDate.toJSON();
+    // const datetimeJson = datetime.substring(0, index);
+    // const data = { ...getState().leaveApplyTransaction, leaveDate: datetimeJson }
+
+    const data = transformDataTo(getState().leaveApplyTransaction)
     LeaveApi
-        .post(`/${employeeId}/Leave/Apply`, getState().leaveApplyTransaction)
-        .then((response) => {
-            dispatch({
+        .post(`/${employeeIdInit}/Leave/Apply`,
+            transformDataTo(getState().leaveApplyTransaction)
+        ).then(async (response) => {
+            await dispatch({
                 type: ActionType.APPLY_LEAVE,
                 payload: response.data
             });
 
-            dispatch(enqueueNotification({
+            await dispatch(enqueueNotification({
                 ...notificationInit,
                 data: response.data,
                 message: 'Leave application submitted Sucessfully',
@@ -35,7 +52,12 @@ export const applyLeave = (employeeId = employeeIdInit) => async (dispatch, getS
                 id: Math.floor(Math.random() * 1000).toString()
             }))
 
-            dispatch(clearFormApplyLeave());
+            await dispatch(clearFormApplyLeave());
+            await dispatch(fetchLeaves());
+            await setTimeout(() => {
+                dispatch(fetchLeaves())
+            }, 5000);
+
 
         }).catch(error => {
             dispatch(enqueueNotification({

@@ -1,6 +1,9 @@
 import axios from 'axios';
 
 export default axios.create({
-    baseURL: 'http://172.168.11.110/iwowhr_signalr'
+    baseURL: 'http://iwids-02/iwowhr_signalr',
+    headers: {
+        'Access-Control-Allow-Origin': '*',
+    }
 })
 

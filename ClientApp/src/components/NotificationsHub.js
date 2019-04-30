@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { runNotificationService, notify } from '../actions';
+import { runNotificationService, notify, signalrInit } from '../actions';
 import StatusMessage from './StatusMessage';
 
 
@@ -10,6 +10,8 @@ class NotificationsHub extends Component {
 
     componentDidMount() {
         this.props.runNotificationService();
+        this.props.signalrInit();
+
     }
 
     handleOnClose = () => {
@@ -32,4 +34,4 @@ const mapStateToProps = ({ notification }) => {
     return { notification };
 }
 
-export default connect(mapStateToProps, { runNotificationService, notify })(NotificationsHub);
+export default connect(mapStateToProps, { runNotificationService, notify, signalrInit })(NotificationsHub);

@@ -10,13 +10,14 @@ import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import BeachAccessIcon from '@material-ui/icons/BeachAccess';
 import Divider from '@material-ui/core/Divider';
+import { fetchLeaves } from '../actions';
 
 import './style/ListView.css'
 
 const styles = theme => ({
     root: {
         width: '100%',
-        maxWidth: 560,
+        // maxWidth: 960,
         // overflowY: 'scroll',
         // height: '80vh',
         // paddingLeft: '48px',
@@ -26,6 +27,7 @@ const styles = theme => ({
     },
     inline: {
         display: 'inline',
+        color: '#9e9c9c'
     },
     ListItem: {
         zIndex: '2'
@@ -36,11 +38,25 @@ const styles = theme => ({
 
 class ListView extends Component {
 
+
+    componentDidMount() {
+        this.props.fetchLeaves(0);
+    }
+
     renderList() {
-        const { classes } = this.props;
-        return [1, 2, 3, 4, 1, 1, 1, 1, 1, 1, 5, 6, 8, 9, 10, 11, 11, 1, 1].map(x => {
+        const { classes, leaveHistory } = this.props;
+        console.log("> leaveHistory :");
+        console.log(leaveHistory);
+        return leaveHistory.map(leave => {
+            const {
+                leaveTransactionNo,
+                reason,
+                datetimeView,
+                leaveTypeView,
+                actionStatusView
+            } = leave;
             return (
-                <div style={{ zIndex: '4' }}>
+                <div key={leaveTransactionNo} style={{ zIndex: '4' }}>
                     <ListItem alignItems="flex-start" className={classes.ListItem} >
                         <ListItemAvatar>
                             <Avatar>
@@ -48,13 +64,13 @@ class ListView extends Component {
                             </Avatar>
                         </ListItemAvatar>
                         <ListItemText
-                            primary="Brunch this weekend?"
+                            primary={`Leave No. ${leaveTransactionNo ? leaveTransactionNo : ''} / ${actionStatusView ? actionStatusView : ''} `}
                             secondary={
                                 <React.Fragment>
                                     <Typography component="span" className={classes.inline} color="textPrimary">
-                                        Ali Connors
-                                        </Typography>
-                                    {" — I'll be in your neighborhood doing errands this…"}
+                                        {datetimeView}
+                                    </Typography>
+                                    {` —  ${leaveTypeView} leave - ${reason}`}
                                 </React.Fragment>
                             }
                         />
@@ -85,4 +101,9 @@ ListView.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(ListView);
+
+const mapStateToProps = ({ leaveHistory }) => {
+    return { leaveHistory };
+}
+
+export default connect(mapStateToProps, { fetchLeaves })(withStyles(styles)(ListView));

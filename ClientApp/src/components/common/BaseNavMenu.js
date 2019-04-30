@@ -51,7 +51,7 @@ class BaseNavMenu extends Component {
                 <AppBar position="static" color="default">
                     <Toolbar>
                         <Link className={classes.grow} to='/'>
-                            <Typography color="red" variant="h6" className={classes.grow}>
+                            <Typography variant="h6" className={classes.grow}>
                                 LEAVE APP
                             </Typography>
                         </Link>
