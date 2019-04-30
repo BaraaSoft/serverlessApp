@@ -1,6 +1,8 @@
 import { ActionType } from './actionType';
 import { WorkflowStatus } from './workflowStatus';
 import { enqueueNotification, notificationInit } from './notificationAction';
+import { fetchLeaves } from './LeaveListviewActions';
+
 //import '@aspnet/signalr';
 
 export const signalrInit = () => (dispatch) => {
@@ -8,45 +10,45 @@ export const signalrInit = () => (dispatch) => {
         .withUrl('http://iwids-02/iwowhr_signalr/LeaveSignalr/')
         .build();
 
-    console.log(connection)
-    // connection.hub.start().done(function () {
-    //     hub.server.joinGameRoom("GroupUser");
-    //     console.log(" >> workflowstatus connected ::")
-    //     console.log("connected");
-    // });
-    console.log(">> Signalr Hub :: ");
-    //console.log(Hub);
+    dispatch(startSignalrConnection(connection));
 
+    connection.on('LeaveStatus', async (data) => {
+        const leaveNo = data.leaveTransactionNo;
+        const status = Object.keys(WorkflowStatus).find(x => {
+            return WorkflowStatus[x] === data.actionStatus;
+        })
+        const message = `Leave application No. ${leaveNo} is ${status}`
+        await dispatch(enqueueNotification({
+            ...notificationInit,
+            message: message,
+            data: data,
+            variant: 'info',
+            priority: 1,
+            id: Math.floor(Math.random() * 1000).toString()
+        }))
 
-
-    // let connection = window.$SR = new window.signalR.HubConnectionBuilder()
-    //     .withUrl('http://iwids-02/iwowhr_signalr/LeaveSignalr/')
-    //     .build();
-
-
-    window.$SR.start().then(function () {
-        console.log(" >> workflowstatus connected");
-        window.$SR.invoke("GroupUser", "winteriscoming@got.com").then((e) => {
-            console.log(" >> workflowstatus -> GroupUser Invoked")
-            console.log(e);
-        }).catch(function (err) {
-            return console.error(err.toString());
-        });
-    });
-
-
-
-
-    window.$SR.on('LeaveStatus', (user, data) => {
-        console.log(" >> workflowstatus change -> user ::")
-        console.log(user);
-        console.log(" >> workflowstatus change -> data ::")
-        console.log(data);
+        await dispatch(fetchLeaves(0));
     });
 }
 
-export const workflowStatusChange = (data) => (dispatch) => {
 
+export const startSignalrConnection = (connection) => (dispatch) => {
+    connection.start().then(function () {
+        console.log(" >> workflowstatus -> connected");
+        dispatch(subscribeByEmail(connection));
+    }).catch((error) => {
+        setTimeout(() => {
+            dispatch(startSignalrConnection(connection));
+        }, 10000);
+    });
+}
+
+export const subscribeByEmail = (connection) => (dispatch) => {
+    connection.invoke("GroupUser", "winteriscoming@got.com").then((e) => {
+        console.log(" >> workflowstatus -> GroupUser Invoked")
+    }).catch(function (err) {
+        return console.error(err.toString());
+    });
 }
 
 

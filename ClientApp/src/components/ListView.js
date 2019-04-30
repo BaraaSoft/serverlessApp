@@ -45,8 +45,6 @@ class ListView extends Component {
 
     renderList() {
         const { classes, leaveHistory } = this.props;
-        console.log("> leaveHistory :");
-        console.log(leaveHistory);
         return leaveHistory.map(leave => {
             const {
                 leaveTransactionNo,

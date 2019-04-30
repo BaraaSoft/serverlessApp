@@ -65,7 +65,7 @@ export const applyLeave = (employeeId = employeeIdInit) => async (dispatch, getS
                 message: 'Error while processing your request',
                 data: error,
                 variant: 'error',
-                priority: 10,
+                priority: 9,
                 id: Math.floor(Math.random() * 1000).toString()
             }))
 
