@@ -5,8 +5,8 @@ import _ from 'lodash';
 export const leaveHistoryReducer = (state = [], action) => {
     switch (action.type) {
         case ActionType.LEAVE_NEW_LIST:
-            const distinctList = _.chain([...action.payload, ...state])
-                .uniqBy('leaveTransactionId')
+            const leavesList = _.chain([...action.payload, ...state])
+                .uniqBy('id')
                 .map((item) => {
                     const timestamp = moment(item.applyDate).unix();
                     const datetimeView = moment(item.applyDate).format('Do MMMM YYYY');
@@ -19,7 +19,7 @@ export const leaveHistoryReducer = (state = [], action) => {
                     return { ...item, timestamp, datetimeView, leaveTypeView, actionStatusView }
                 })
                 .orderBy('timestamp', 'desc').value();
-            return [...distinctList];
+            return [...leavesList];
         default:
             return state;
     }

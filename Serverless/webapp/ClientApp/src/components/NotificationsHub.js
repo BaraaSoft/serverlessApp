@@ -10,7 +10,7 @@ class NotificationsHub extends Component {
 
     componentDidMount() {
         this.props.runNotificationService();
-        this.props.signalrInit();
+        //this.props.signalrInit();
 
     }
 

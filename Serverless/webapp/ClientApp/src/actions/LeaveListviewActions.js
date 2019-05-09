@@ -7,7 +7,7 @@ const empId = 'C7214A22-27D0-4AE3-BB9B-58D2BD296D81';
 
 
 export const fetchLeaves = (page) => (dispatch) => {
-    LeaveApi.get(`/${empId}/Leave/Histories`).then((response) => {
+    LeaveApi.get(`/leaves`).then((response) => {
         console.log(response);
         dispatch({
             type: ActionType.LEAVE_NEW_LIST,
