@@ -1,6 +1,7 @@
 {
   "name": "WebApp",
   "version": "0.1.0",
+  "homepage": "https://leaveapp.blob.core.windows.net/web",
   "private": true,
   "dependencies": {
     "@aspnet/signalr": "^1.1.4",

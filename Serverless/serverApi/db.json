@@ -1,0 +1,20 @@
+{
+  "leaves": [
+    {
+      "leaveType": 10,
+      "applyDate": "2019-05-09T07:08:00.000Z",
+      "reason": "it is my annual leave friends",
+      "actionStatus": 1,
+      "employeeId": "C7214A22-27D0-4AE3-BB9B-58D2BD296D81",
+      "id": 1
+    },
+    {
+      "leaveType": 140,
+      "applyDate": "2019-05-31T07:10:00.000Z",
+      "reason": "let's have a rest",
+      "actionStatus": 1,
+      "employeeId": "C7214A22-27D0-4AE3-BB9B-58D2BD296D81",
+      "id": 2
+    }
+  ]
+}
